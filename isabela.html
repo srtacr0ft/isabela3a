@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App de Pintura</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pinte na tela</h1>
+  <canvas id="paintCanvas" width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const context = canvas.getContext('2d');
+    let painting = false;
+
+    function startPosition(e) {
+      painting = true;
+      draw(e);
+    }
+
+    function endPosition() {
+      painting = false;
+      context.beginPath();
+    }
+
+    function draw(e) {
+      if (!painting) return;
+      context.lineWidth = 5;
+      context.lineCap = 'round';
+      context.strokeStyle = 'black';
+
+      context.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+      context.stroke();
+      context.beginPath();
+      context.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    }
+
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mouseup', endPosition);
+    canvas.addEventListener('mousemove', draw);
+  </script>
+</body>
+</html>
